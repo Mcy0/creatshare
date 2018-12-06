@@ -31,6 +31,10 @@ public class LoginServlet extends HttpServlet {
     private Logger logger = Logger.getLogger(LoginServlet.class);
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //处理参数
+//        PrintWriter out = response.getWriter();
+//        out.print(JsonStringUtil.fail("200","缺少参数"));
+//        out.close();
+//        return;
         String telCode = request.getParameter("telCode");
         String token = null;
         PrintWriter out = response.getWriter();
@@ -89,7 +93,7 @@ public class LoginServlet extends HttpServlet {
         }
         else
         {
-            map.put("user",user);
+            map.put("user",userLogin);
             try {
                 token = TokenUtil.create(map);
             } catch (TokenCreateException e) {

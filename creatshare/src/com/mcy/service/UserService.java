@@ -33,7 +33,7 @@ public class UserService {
         {
             user1 = userDao.queryByTelByPassword(tel,password);
             if (user1 != null)
-                return user;
+                return user1;
         }
         else
         {

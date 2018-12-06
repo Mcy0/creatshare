@@ -11,8 +11,7 @@ import java.io.IOException;
 @WebServlet(name = "PhotoServlet",urlPatterns = "/photo")
 public class PhotoServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String name = request.getParameter("name");
-        ImageUtil.showImage(response,name,false);
+        ImageUtil.showImage(response,request,false);
     }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request,response);

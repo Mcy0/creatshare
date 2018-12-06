@@ -57,7 +57,7 @@ public class UploadPictureServlet extends HttpServlet {
             out.close();
             return;
         }
-        String headPortrait = "http://132.232.119.121/creatshare/photo?name="+ user.getTel() +"." + last;
+        String headPortrait = "http://132.232.119.121/creatshare/photo?name="+ user.getTel() +"." + last + "&flag=head";
         String headPath = FilePathUtil.HEADPHOTO + "/" + user.getTel() + "." + last;
         BASE64Decoder decoder = new BASE64Decoder();
         byte[] b = decoder.decodeBuffer(photo);
