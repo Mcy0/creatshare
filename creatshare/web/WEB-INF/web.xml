@@ -3,5 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
-
+    <servlet>
+        <!-- Servlet名 -->
+        <servlet-name>PathServlet</servlet-name>
+        <!-- Servlet的实现类 -->
+        <servlet-class>com.mcy.web.servlet.loadOnStartup.PathServlet</servlet-class>
+        <!-- 配置应用启动时，创建Servlet实例
+            ，相当于指定@WebServlet的loadOnStartup属性-->
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 </web-app>

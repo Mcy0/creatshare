@@ -1,7 +1,5 @@
 package com.mcy.web.filter;
 
-
-
 import org.apache.log4j.Logger;
 
 import javax.servlet.*;
@@ -31,6 +29,7 @@ public class EncodingFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest)req;
         String method = request.getMethod();
+        resp.setCharacterEncoding(charset);
         if (method.equalsIgnoreCase("post"))
         {
             request.setCharacterEncoding(charset);
@@ -39,7 +38,7 @@ public class EncodingFilter implements Filter {
         {
             HttpServletRequest myRequest = new MyRequest(request,charset,originalCharset);
         }
-
+        resp.setContentType("application/json");
         chain.doFilter(req, resp);
     }
     

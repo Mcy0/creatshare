@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
          <Configuration status="INFO">
          <properties>
-             <!--变量定义 -->
-             <Property name="baseDir">creatshare/Log/</Property>
+             <!--&lt;!&ndash;变量定义 &ndash;&gt;/home/tomcat/MCY/Log/-->
+             <Property name="baseDir">/home/tomcat/MCY/Log/</Property>
              <property name="log_pattern">%-d{yyyy-MM-dd HH:mm:ss.SSS} [%t:%r] [%F:%L] - [%p] %m%n</property>
              <property name="file_name">info.log</property>
              <property name="error_file_name">error.log</property>
