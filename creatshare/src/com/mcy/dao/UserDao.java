@@ -1,12 +1,15 @@
 package com.mcy.dao;
 
+import com.mcy.daomain.Activity;
 import com.mcy.daomain.User;
 import com.mcy.utils.DataSourceUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.junit.Test;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserDao {
     /**
@@ -80,6 +83,12 @@ public class UserDao {
         String sql = "select * from users where tel = ?";
         QueryRunner runner = new QueryRunner(DataSourceUtils.getDataSource());
         return runner.query(sql,new BeanHandler<>(User.class),tel);
+    }
+    //分页查询
+    public List<User> queryUserByPage(int pageNo, int pageSize) throws SQLException {
+        String sql = "select * from users order by tel limit ?,?";
+        QueryRunner runner = new QueryRunner(DataSourceUtils.getDataSource());
+        return (List<User>) runner.query(sql,new BeanListHandler(User.class),pageNo,pageSize);
     }
     @Test
     public void testQueryByTel() throws SQLException {

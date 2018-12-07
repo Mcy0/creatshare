@@ -5,8 +5,14 @@ import com.mcy.daomain.User;
 import com.mcy.exception.loginOrRegister.LoginNotExitException;
 import com.mcy.exception.loginOrRegister.RegisterException;
 import com.mcy.exception.user.UserFormatException;
+import com.mcy.utils.DataSourceUtils;
 import com.sun.deploy.association.RegisterFailedException;
+import jdk.nashorn.internal.runtime.UserAccessorProperty;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
+
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserService {
     /**
@@ -93,5 +99,17 @@ public class UserService {
         UserDao userDao = new UserDao();
         User user = userDao.queryHeadPortraitByPassword(tel);
         return user.getHeadPortrait();
+    }
+    //分页查询用户
+    public List<User> queryUserByPage(int pageNo, int pageSize) throws SQLException {
+        pageNo--;
+        UserDao userDao = new UserDao();
+        List<User> users = userDao.queryUserByPage(pageNo,pageSize);
+        return users;
+    }
+
+    public static void main(String[] args) throws SQLException {
+        UserService userService = new UserService();
+        System.out.println(userService.queryUserByPage(1,1));
     }
 }

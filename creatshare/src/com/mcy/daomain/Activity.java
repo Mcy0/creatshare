@@ -21,7 +21,7 @@ public class Activity {
     public boolean judgeAllFormat()
     {
         String regExTel = "1\\d{10}";
-        String regExDate = "";
+        String regExDate = "\\d+-\\d+-\\d+ \\d+:\\d+";
         if (tel == null || type == 0 || theme == null || place == null || place == null || info == null || star == null || end == null)
         {
             return false;

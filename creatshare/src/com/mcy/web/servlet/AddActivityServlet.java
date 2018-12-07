@@ -78,7 +78,7 @@ public class AddActivityServlet extends HttpServlet {
             i++;
             String last = photo.substring(photo.indexOf("/") + 1,photo.indexOf(";"));
             p = p.substring(photo.indexOf("64") + 3);
-            String name = user.getTel() + "MCY" +i;
+            String name = user.getTel() + "MCY" +i + last;
             createImage(p,name);
             String activityPhoto = "http://132.232.119.121/creatshare/photo?name="+ name + "&" + "flag=activity";
             if(i !=1)
@@ -95,15 +95,15 @@ public class AddActivityServlet extends HttpServlet {
         ActivityService activityService = new ActivityService();
         try {
             activityService.addActivity(activity);
+            out.print(JsonStringUtil.fail("401","缺少参数activity:" + activity));
+            out.close();
+            return;
         } catch (SQLException e) {
             e.printStackTrace();
-            out.print(JsonStringUtil.fail("500","数据库添加活动失败"));
+            out.print(JsonStringUtil.success("200","成功添加活动",true));
             out.close();
             return;
         }
-        out.print(JsonStringUtil.fail("401","缺少参数activity:" + activity));
-        out.close();
-        return;
         //String activityPhotos = "http://132.232.119.121/creatshare/photo?name="+ name + "&" + "flag=activity";
     }
 
