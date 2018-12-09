@@ -82,7 +82,7 @@ public class RegisterServlet extends HttpServlet {
             map.remove("telCode");
             token = TokenUtil.create(map);
             user.setNickname(user.getTel());
-            out.print(JsonStringUtil.success("200",user,token,true));//成功
+            out.print(JsonStringUtil.success("200",user,token));//成功
             return;
         } catch (RegisterException e) {
             out.print(JsonStringUtil.fail("403", "已经注册"));

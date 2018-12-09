@@ -71,7 +71,7 @@ public class ModifyDataServlet extends HttpServlet {
             out.close();
             return;
         }
-        out.print(JsonStringUtil.success("200",user,token,true));
+        out.print(JsonStringUtil.success("200",user,token));
         out.close();
         return;
     }

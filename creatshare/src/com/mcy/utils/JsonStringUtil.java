@@ -12,17 +12,23 @@ public class JsonStringUtil {
      * @param token
      * @return
      */
-    public static String success(String code, Object object, String token,boolean count)
+    public static String success(String code, Object object, String token)
     {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code",code);
         jsonObject.put("Authentication",token);
         JSONArray jsonArray = new JSONArray();
         jsonArray.add(object);
-        if (count)
-            jsonObject.put("data",jsonArray.get(0));
-        else
-            jsonObject.put("data",jsonArray);
+        jsonObject.put("data",jsonArray.get(0));
+        return jsonObject.toString();
+    }
+    public static String success(String code, Object object)
+    {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code",code);
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.add(object);
+        jsonObject.put("data",jsonArray);
         return jsonObject.toString();
     }
     public static String success(String code, String token)

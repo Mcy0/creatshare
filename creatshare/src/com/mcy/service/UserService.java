@@ -107,9 +107,24 @@ public class UserService {
         List<User> users = userDao.queryUserByPage(pageNo,pageSize);
         return users;
     }
-
+    //判断用户是否注册
+    public boolean judgeRegister(String tel) throws SQLException {
+        UserDao userDao = new UserDao();
+        User user = userDao.queryByTel(tel);
+        if (user == null)
+        {
+            return false;
+        }
+        else
+            return true;
+    }
     public static void main(String[] args) throws SQLException {
         UserService userService = new UserService();
         System.out.println(userService.queryUserByPage(1,1));
+    }
+
+    public User queryUserByTel(String tel) throws SQLException {
+        UserDao userDao = new UserDao();
+        return userDao.queryByTel(tel);
     }
 }

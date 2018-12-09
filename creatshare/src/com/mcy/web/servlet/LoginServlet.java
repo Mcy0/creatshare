@@ -31,10 +31,6 @@ public class LoginServlet extends HttpServlet {
     private Logger logger = Logger.getLogger(LoginServlet.class);
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //处理参数
-//        PrintWriter out = response.getWriter();
-//        out.print(JsonStringUtil.fail("200","缺少参数"));
-//        out.close();
-//        return;
         String telCode = request.getParameter("telCode");
         String token = null;
         PrintWriter out = response.getWriter();
@@ -53,9 +49,9 @@ public class LoginServlet extends HttpServlet {
         }
         //处理token
         Map<String,Object> map = new HashMap<>();
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession();
         String code = (String) session.getAttribute("code");
-        if (code == null || code.length() <= 0|| !code.equals(telCode))
+        if (code == null || code.length() <= 0|| !code.equalsIgnoreCase(telCode))
         {
             out.print(JsonStringUtil.fail("406","验证码错误" + "验证码:" + code + ":::" +session));
             if (session != null)
@@ -99,7 +95,7 @@ public class LoginServlet extends HttpServlet {
             } catch (TokenCreateException e) {
                 out.print(JsonStringUtil.fail("500","服务器异常"));
             }
-            out.print(JsonStringUtil.success("200",userLogin,token,true));
+            out.print(JsonStringUtil.success("200",userLogin,token));
             out.close();
             return;
         }

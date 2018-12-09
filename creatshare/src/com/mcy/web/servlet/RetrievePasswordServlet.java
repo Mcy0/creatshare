@@ -1,5 +1,6 @@
 package com.mcy.web.servlet;
 
+import com.mcy.daomain.User;
 import com.mcy.exception.token.TokenTimeoutException;
 import com.mcy.exception.token.TokenVerifyOrParseFailException;
 import com.mcy.exception.user.UserFormatException;
@@ -61,6 +62,20 @@ public class RetrievePasswordServlet extends HttpServlet {
             map.remove("telCode");
         }
         UserService userService = new UserService();
+        User user = null;
+        try {
+            user = userService.queryUserByTel(tel);
+        } catch (SQLException e) {
+            out.print(JsonStringUtil.fail("500","服务器异常"));
+            out.close();
+            return;
+        }
+        if (user == null)
+        {
+            out.print(JsonStringUtil.fail("404","用户不存在"));
+            out.close();
+            return;
+        }
         try {
             userService.retrievePassword(tel,newPassword);
             out.print(JsonStringUtil.success("200","成功",true));

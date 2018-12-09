@@ -17,6 +17,7 @@ public class Activity {
     private String src;
     private String star;
     private String end;
+    private String date;
 
     public boolean judgeAllFormat()
     {
@@ -35,6 +36,14 @@ public class Activity {
             return false;
         }
         return true;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getTel() {
@@ -103,9 +112,14 @@ public class Activity {
 
     @Override
     public String toString() {
-        return "Activity[tel:" + tel + "]";
+        return "Activity[tel:" + tel + "type" + type + "theme" + theme + "place" + place + "info" + info + "src" + src + "star" + star + "end" + end + "date" + date +"]";
     }
-
+    //判断日期格式
+    public boolean judgeDateFormat(String date)
+    {
+        String regEx = "\\d+-\\d+-\\d";
+        return PatternMatcherUtil.judgeMatches(date,regEx);
+    }
     @Test
     public void test() throws SQLException, ParseException {
         Date date = new Date();

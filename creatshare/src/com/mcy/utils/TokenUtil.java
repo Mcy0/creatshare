@@ -62,44 +62,61 @@ public class TokenUtil {
 //        return token;
     }
     //解析一个token
-    private static Map<String,Object> validToken(String token) throws ParseException, JOSEException, TokenVerifyOrParseFailException, TokenTimeoutException {
+    private static Map<String,Object> validToken(String token) throws TokenVerifyOrParseFailException, TokenTimeoutException {
 
 //        解析token
 
-        JWSObject jwsObject = JWSObject.parse(token);
+        JWSObject jwsObject = null;
+        try {
+            jwsObject = JWSObject.parse(token);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            throw new TokenVerifyOrParseFailException("解析异常");
+        }
 
         //获取到载荷
         Payload payload=jwsObject.getPayload();
 
         //建立一个解锁密匙
-        JWSVerifier jwsVerifier = new MACVerifier(secret);
+        JWSVerifier jwsVerifier = null;
+        try {
+            jwsVerifier = new MACVerifier(secret);
+        } catch (JOSEException e) {
+            e.printStackTrace();
+            throw new TokenVerifyOrParseFailException("解析异常");
+        }
 
         Map<String, Object> resultMap = new HashMap<>();
         //判断token
-        if (jwsObject.verify(jwsVerifier)) {
-            JSONObject jsonObject = payload.toJSONObject();
-            //判断token是否过期
-            if (jsonObject.containsKey("exp")) {
-                Long expTime = Long.valueOf(jsonObject.get("exp").toString());
-                Long nowTime = new Date().getTime();
-                //判断是否过期
-                if (nowTime > expTime) {
-                    //已经过期
-                    throw new TokenTimeoutException("token过期");
+        try {
+            if (jwsObject.verify(jwsVerifier)) {
+                JSONObject jsonObject = payload.toJSONObject();
+                //判断token是否过期
+                if (jsonObject.containsKey("exp")) {
+                    Long expTime = Long.valueOf(jsonObject.get("exp").toString());
+                    Long nowTime = new Date().getTime();
+                    //判断是否过期
+                    if (nowTime > expTime) {
+                        //已经过期
+                        throw new TokenTimeoutException("token过期");
+                    }
+                    else
+                    {
+                        for (String str :
+                                jsonObject.keySet()) {
+                            resultMap.put(str, jsonObject.get(str));
+                        }
+                    }
                 }
                 else
                 {
-                    for (String str :
-                            jsonObject.keySet()) {
-                        resultMap.put(str, jsonObject.get(str));
-                    }
+                    throw new TokenVerifyOrParseFailException("验证失败");
                 }
-            }
-            else
-            {
+            }else {
                 throw new TokenVerifyOrParseFailException("验证失败");
             }
-        }else {
+        } catch (JOSEException e) {
+            e.printStackTrace();
             throw new TokenVerifyOrParseFailException("验证失败");
         }
         System.out.println(resultMap);
@@ -109,7 +126,7 @@ public class TokenUtil {
     //生成token的业务逻辑
     public static String create(Map<String, Object> map) throws TokenCreateException {
         //过期时间
-        map.put("exp", new Date().getTime()+1000 * 60 * 60 * 30);
+        map.put("exp", new Date().getTime() + 1000 * 60 * 60 * 24 * 3);
         String token = null;
         try {
             token = creatToken(map);
@@ -123,17 +140,11 @@ public class TokenUtil {
     public static Map<String, Object> valid(String token) throws TokenTimeoutException, TokenVerifyOrParseFailException {
         //解析token
         Map<String, Object> validMap = null;
-        try {
-            if (token != null) {
+        if (token != null) {
 
-                validMap = TokenUtil.validToken(token);
-            }
-            else {
-                throw new TokenVerifyOrParseFailException();
-            }
-        }catch(ParseException e){
-            throw new TokenVerifyOrParseFailException();
-        } catch(JOSEException e){
+            validMap = TokenUtil.validToken(token);
+        }
+        else {
             throw new TokenVerifyOrParseFailException();
         }
         return validMap;

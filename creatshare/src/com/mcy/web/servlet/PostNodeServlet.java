@@ -3,6 +3,7 @@ package com.mcy.web.servlet;
 import com.mcy.daomain.User;
 import com.mcy.exception.token.TokenCreateException;
 import com.mcy.utils.JsonStringUtil;
+import com.mcy.utils.PostNodeUtil;
 import com.mcy.utils.TokenUtil;
 
 import javax.servlet.ServletException;
@@ -27,12 +28,12 @@ public class PostNodeServlet extends HttpServlet {
             out.close();
             return;
         }
-//        PostNodeUtil postNodeUtil = new PostNodeUtil();
-//        postNodeUtil.post(tel);
-//        Cookie cookie = new Cookie("code",postNodeUtil.getCode());
+        PostNodeUtil postNodeUtil = new PostNodeUtil();
+        postNodeUtil.post(tel);
+        //Cookie cookie = new Cookie("code",postNodeUtil.getCode());
 //        保存三十分钟
         Map<String,Object> map = new HashMap<>();
-        map.put("telCode","1234");
+        map.put("telCode",postNodeUtil.getCode());
         try {
             token = TokenUtil.create(map);
         } catch (TokenCreateException e) {
